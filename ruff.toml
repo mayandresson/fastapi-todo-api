@@ -1,3 +1,2 @@
-﻿[ruff]
-line-length = 88
-exclude = ["venv", ".venv", "__pycache__", "tests"]
+﻿line-length = 88
+extend-exclude = ["venv", ".venv", "__pycache__", "tests"]
