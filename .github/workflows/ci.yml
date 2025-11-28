@@ -1,4 +1,4 @@
-name: CI - FastAPI
+name: CI - FastAPI (Lint + Tests + Coverage)
 
 on:
   push:
@@ -23,9 +23,24 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          pip install pytest httpx
+          pip install ruff pytest pytest-cov
 
-      - name: Run tests
+      - name: Lint with ruff (auto-fix safe issues)
+        run: |
+          # auto-fix trivial issues, but don't fail the job here
+          ruff --fix .
+          # then run lint check (non-blocking to avoid failing on style; change to exit non-zero if you want strict)
+          ruff check .
+
+      - name: Run tests with coverage
         env:
           PYTHONPATH: .
-        run: pytest -q
+        run: |
+          pytest --cov=./ --cov-report=xml -q
+
+      - name: Upload coverage xml
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
