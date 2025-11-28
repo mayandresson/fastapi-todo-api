@@ -1,0 +1,6 @@
+# Exemplo rápido de uso com curl
+# Criar uma tarefa
+curl -X POST "http://127.0.0.1:8000/todos" -H "Content-Type: application/json" -d "{"title": "Testar API", "description": "Criar tarefa de teste"}"
+
+# Listar tarefas
+curl "http://127.0.0.1:8000/todos"
