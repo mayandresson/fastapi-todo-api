@@ -1,3 +1,9 @@
-fastapi
+﻿fastapi
 uvicorn
-pydantic
+sqlmodel
+psycopg[binary]
+alembic
+pytest
+httpx
+pytest-cov
+ruff
