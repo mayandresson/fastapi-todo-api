@@ -1,11 +1,10 @@
-from fastapi import APIRouter, HTTPException
+ï»¿from fastapi import APIRouter, HTTPException
 from typing import List
 from uuid import uuid4
 from app.schemas import Todo
 
 router = APIRouter()
 
-# armazenamento simples em memória (por simplicidade)
 DB: List[Todo] = []
 
 @router.get('/todos', response_model=List[Todo])
