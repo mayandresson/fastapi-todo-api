@@ -6,7 +6,7 @@ from uuid import uuid4
 app = FastAPI(title="To-Do API", version="0.1.0")
 
 class Todo(BaseModel):
-    id: Optional[str]
+    id: Optional[str] = None
     title: str
     description: Optional[str] = ""
     done: bool = False
