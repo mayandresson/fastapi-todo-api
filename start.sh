@@ -1,9 +1,13 @@
 ﻿#!/bin/sh
-# garante valor padrão se PORT for vazio/unset
+set -e
+
+# define PORT default se não existir
 : "${PORT:=8000}"
 
-# log simples para debugar (opcional)
-echo "Starting uvicorn on 0.0.0.0:${PORT}"
+echo "Running migrations (if alembic present)..."
+if command -v alembic >/dev/null 2>&1; then
+  alembic upgrade head || true
+fi
 
-# substitui o processo do shell pelo uvicorn (melhor para signals)
-exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT"
+echo "Starting uvicorn on 0.0.0.0:${PORT}"
+exec uvicorn app.main:app --host 0.0.0.0 --port "$PORT" --proxy-headers

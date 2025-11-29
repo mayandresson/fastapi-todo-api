@@ -5,15 +5,13 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# copiar requirements e instalar primeiro (melhora cache)
 COPY requirements.txt /app/requirements.txt
 RUN pip install --upgrade pip \
  && pip install --no-cache-dir -r /app/requirements.txt
 
-# copiar todo o código
 COPY . /app
 
-# instalar dos2unix para garantir conversão de CRLF -> LF e remover BOM, depois cleanup
+# converter line endings do start.sh e garantir exec
 RUN apt-get update \
  && apt-get install -y --no-install-recommends dos2unix \
  && dos2unix /app/start.sh || true \
