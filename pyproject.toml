@@ -1,4 +1,2 @@
 ﻿[tool.ruff]
-extend-exclude = [
-  "alembic/versions",
-]
+extend-exclude = ["alembic/versions"]
