@@ -5,21 +5,24 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /app
 
-# copiar requirements e instalar primeiro (cache)
+# copiar requirements e instalar primeiro (melhora cache)
 COPY requirements.txt /app/requirements.txt
 RUN pip install --upgrade pip \
  && pip install --no-cache-dir -r /app/requirements.txt
 
-# copiar o código (inclui start.sh)
+# copiar todo o código
 COPY . /app
 
-# garantir linhas finais e permissions; chmod no build
-RUN chmod +x /app/start.sh || true
+# instalar dos2unix para garantir conversão de CRLF -> LF e remover BOM, depois cleanup
+RUN apt-get update \
+ && apt-get install -y --no-install-recommends dos2unix \
+ && dos2unix /app/start.sh || true \
+ && chmod +x /app/start.sh \
+ && apt-get remove -y dos2unix \
+ && apt-get autoremove -y \
+ && rm -rf /var/lib/apt/lists/*
 
 EXPOSE 8000
-
-# Deixe PORT padrão (mas Render sobrescreve)
 ENV PORT 8000
 
-# start script robusto
 CMD ["/app/start.sh"]
