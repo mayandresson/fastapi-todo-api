@@ -10,12 +10,16 @@ COPY requirements.txt /app/requirements.txt
 RUN pip install --upgrade pip \
  && pip install --no-cache-dir -r /app/requirements.txt
 
-# copiar o código
+# copiar o código (inclui start.sh)
 COPY . /app
+
+# garantir linhas finais e permissions; chmod no build
+RUN chmod +x /app/start.sh || true
 
 EXPOSE 8000
 
+# Deixe PORT padrão (mas Render sobrescreve)
 ENV PORT 8000
 
-# comando de arranque: usar sh -c (expande )
-CMD ["sh", "-c", "uvicorn app.main:app --host 0.0.0.0 --port "]
+# start script robusto
+CMD ["/app/start.sh"]
