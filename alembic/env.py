@@ -18,10 +18,9 @@ fileConfig(config.config_file_name)
 # ensure project path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from sqlmodel import SQLModel
+from sqlmodel import SQLModel  # noqa: E402
 # import models so metadata is populated
 # adjust if your models live elsewhere
-import app.models
 # If you have other modules with models, import them too
 # import app.other_models
 
